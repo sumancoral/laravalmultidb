@@ -33,25 +33,25 @@ class HomeController extends Controller {
 			$pass_md5=md5($password);
 			$dydb =$this->dydb($db_name);
 		  $CUTDB = $dydb->getConnection();
-			if(DB::connection($db_name))
-			{
-				$response = $CUTDB->table('user_login')
-									->where('user_name', '=' ,$username)->where('user_password', '=', $pass_md5)
-									->get()
-									->count();
-				if($response==1){
-					session(['DBNAME' => $db_name]);
-					session(['USERNAME' => $username]);
-					return redirect('/dashboard');
-				} else {
-					return redirect('/login');
-				}
-			}
-			else {
-				{
-					return redirect('/login');
-				}
-			}
+        try {
+              if($CUTDB->getDatabaseName())
+    			    {
+        				$response = $CUTDB->table('user_login')
+        									->where('user_name', '=' ,$username)->where('user_password', '=', $pass_md5)
+        									->get()
+        									->count();
+        				if($response==1){
+        					session(['DBNAME' => $db_name]);
+        					session(['USERNAME' => $username]);
+        					return redirect('/dashboard');
+        				} else {
+        					return redirect('/login')->withErrors(['Username Or Password Wrong']);
+        				}
+    			    }
+           }
+        catch (\Exception $e) {
+          return redirect('/login')->withErrors(['You Have Enter Wrong Nickname']);;
+        }
    }
 
    public function showDashboard()
@@ -61,8 +61,8 @@ class HomeController extends Controller {
 
    public function getLogout()
    {
-	  Session::flush ();
-	  return redirect('/login');
+  	  Session::flush ();
+  	  return redirect('/login');
    }
 
 
