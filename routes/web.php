@@ -15,8 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('user','UserController');
+
 Route::get('login', 'HomeController@showLogin');
 Route::post('login','HomeController@doLogin');
-Route::get('dashboard', 'HomeController@showDashboard');
-Route::get('logout', 'HomeController@getLogout');
+
+Route::group(['middleware' => 'usersession'], function () {
+  Route::get('dashboard', 'HomeController@showDashboard');
+  Route::get('logout', 'HomeController@getLogout');
+
+});

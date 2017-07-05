@@ -57,7 +57,11 @@ input[type="password"] {
 
 <!-- if there are login errors, show them here -->
 @if($errors->any())
-<h4>{{$errors->first()}}</h4>
+<ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
 @endif
 <p>
     {{ Form::label('Nickname', 'nickname') }}

@@ -22,7 +22,14 @@ class HomeController extends Controller {
 
    public function showLogin()
    {
-		return view('login.index');
+       if (!Session::get('DBNAME') && !Session::get('USERNAME')) {
+
+           return view('login.index');
+       }
+       else {
+
+          return redirect('/dashboard');
+       }
    }
 
    public function doLogin(Request $request)
@@ -33,6 +40,11 @@ class HomeController extends Controller {
 			$pass_md5=md5($password);
 			$dydb =$this->dydb($db_name);
 		  $CUTDB = $dydb->getConnection();
+      $this->validate($request, [
+            'nickname' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+      ]);
         try {
               if($CUTDB->getDatabaseName())
     			    {
