@@ -32,6 +32,10 @@ class HomeController extends Controller {
        }
    }
 
+   /*
+   doLogin : this is login check function.
+   */
+
    public function doLogin(Request $request)
    {
 			$db_name=$request->input('nickname');

@@ -11,16 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
 Route::get('login', 'HomeController@showLogin');
 Route::post('login','HomeController@doLogin');
 
 Route::group(['middleware' => 'usersession'], function () {
   Route::get('dashboard', 'HomeController@showDashboard');
   Route::get('logout', 'HomeController@getLogout');
+
 
 });
